@@ -12,15 +12,23 @@ interface MoviesState {
 export const useMovies = () => {
 
     const [isLoading, setisLoading] = useState(true)
-    const [filmsCine, setFilmsCine] = useState<Movie[]>([]);
-    const [popularFilms, setPopularFilms] = useState<Movie[]>([])
+    const [moviesState, setMoviesState] = useState<MoviesState>();
 
     const getMovies = async() => {
 
-        const nowPlayingResp = await movieDB.get<MoviesResponse>('/now_playing');
-        const popularResp = await movieDB.get<MoviesResponse>('/popular');
-        setFilmsCine(nowPlayingResp.data.results);
-        setPopularFilms(popularResp.data.results);
+        const nowPlayingPromise = movieDB.get<MoviesResponse>('/now_playing')
+        const popularPromise = movieDB.get<MoviesResponse>('/popular')
+        const topRatedPromise = movieDB.get<MoviesResponse>('/top_rated')
+        const upcomingPromise = movieDB.get<MoviesResponse>('/upcoming')
+
+        const resp = await Promise.all([nowPlayingPromise, popularPromise, topRatedPromise, upcomingPromise ])
+
+        setMoviesState({
+            nowPlaying: resp[0].data.results ,
+            popular: resp[1].data.results,
+            topRated: resp[2].data.results,
+            upComing: resp[3].data.results,
+        })
         setisLoading(false);
     }
 
@@ -31,8 +39,7 @@ export const useMovies = () => {
     
 
     return {
-        filmsCine,
+        ...moviesState,
         isLoading,
-        popularFilms,
     }
 }

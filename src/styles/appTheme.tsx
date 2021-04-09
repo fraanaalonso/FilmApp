@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
         height: 260,
     },
     viewTextPopulares: {
-        fontSize: 30,
+        fontSize: 20,
         fontWeight: 'bold'
     }
     
