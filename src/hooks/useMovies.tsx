@@ -12,7 +12,12 @@ interface MoviesState {
 export const useMovies = () => {
 
     const [isLoading, setisLoading] = useState(true)
-    const [moviesState, setMoviesState] = useState<MoviesState>();
+    const [moviesState, setMoviesState] = useState<MoviesState>({
+        nowPlaying: [],
+        popular: [],
+        topRated: [],
+        upComing: [],
+    }); //each object is initializer as an empty array cause the request could fail and we would not have any data to post
 
     const getMovies = async() => {
 
